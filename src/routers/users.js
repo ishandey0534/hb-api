@@ -29,7 +29,7 @@ router.post('/reg', async (req,res) => {
 router.post('/login', async (req, res) => {
     const user = await User.findOne({email: req.body.email});
     if(!user){
-        return res.status(400).send('No such user exists');
+        return res.status(404).send('No such user exists');
     }
     const validPassword = await bcrypt.compare(req.body.password,user.password);
     if(!validPassword){
@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
 
 //how to use
 router.get('/', (req,res) => {
-    res.send('<h1>Front end part</h1><p>Use Postman to test urls /reg and /login etc</p><p>Enter urlencoded data with name,email and password fields and use token to authenticate after you login</p>');
+    res.send('<p>Refer to <a href="https://documenter.getpostman.com/view/12162568/T1DqfbzQ">Docs</a> on how to use.</p>');
 });
 
 router.get('/user/me', auth, async (req,res) => {
@@ -51,7 +51,7 @@ router.get('/user/me', auth, async (req,res) => {
         const user = await User.findOne({_id: req.user._id});
         res.send(user);
     }catch(e){
-        res.send(500);
+        res.send(400);
     }
 });
 
@@ -61,7 +61,7 @@ router.patch('/user/me',auth,async (req,res) => {
         const user = await User.findOneAndUpdate({_id: req.user._id},req.body,{new: true});
         res.send(user);
     }catch(e){
-        res.send(500);
+        res.send(400);
     }
 })
 

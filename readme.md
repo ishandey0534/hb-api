@@ -2,7 +2,7 @@
 
 ## Description
 
-Use Postman to test it out.
+Use Postman to test it out. Refer to [https://documenter.getpostman.com/view/12162568/T1DqfbzQ](https://documenter.getpostman.com/view/12162568/T1DqfbzQ) on how to use my API.
 
 ## Urls
 1. /register (post) - requires name,email,password as urlencoded
