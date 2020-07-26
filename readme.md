@@ -5,10 +5,10 @@
 Use Postman to test it out.
 
 ## Urls
-1. /register (post) - requires name,email,password as JSON
-2. /login (post) - requires email,password as JSON
+1. /register (post) - requires name,email,password as urlencoded
+2. /login (post) - requires email,password as urlencoded
 3. /user/me (get) - authenticated
-4. /user/me (patch) - any as JSON and authenticated
+4. /user/me (patch) - any as urlencoded and authenticated
 5. /user/me (delete) - authenticated
 
 ## Authenticate

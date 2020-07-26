@@ -15,7 +15,7 @@ const userRouter = require('./routers/users.js');
 const app = express();
 const port = process.env.PORT;
 
-app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use(userRouter);
 
 app.listen(port, () => {

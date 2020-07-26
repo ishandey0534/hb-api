@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
 
 //how to use
 router.get('/', (req,res) => {
-    res.send('<h1>Front end part</h1><p>Use Postman to test urls /reg and /login etc</p><p>Enter JSON with name,email and password fields and use token to authenticate after you login</p>');
+    res.send('<h1>Front end part</h1><p>Use Postman to test urls /reg and /login etc</p><p>Enter urlencoded data with name,email and password fields and use token to authenticate after you login</p>');
 });
 
 router.get('/user/me', auth, async (req,res) => {
