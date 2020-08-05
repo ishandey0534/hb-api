@@ -8,16 +8,16 @@ const router = express.Router();
 
 //register
 router.post('/reg', async (req,res) => {
-    //hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password,salt);
-
-    const user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: hashedPassword
-    });
     try{
+        //hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password,salt);
+
+        const user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword
+        });
         await user.save();
         res.send(user);
     }catch(e){
@@ -27,18 +27,33 @@ router.post('/reg', async (req,res) => {
 
 //login
 router.post('/login', async (req, res) => {
-    const user = await User.findOne({email: req.body.email});
-    if(!user){
-        return res.status(404).send('No such user exists');
-    }
-    const validPassword = await bcrypt.compare(req.body.password,user.password);
-    if(!validPassword){
-        return res.status(400).send('Invalid credentials');
-    }
+    try{
+        let user = await User.findOne({email: req.body.email});
+        if(!user){
+            return res.status(404).send('No such user exists');
+        }
+        const validPassword = await bcrypt.compare(req.body.password,user.password);
+        if(!validPassword){
+            return res.status(400).send('Invalid credentials');
+        }
 
-    //create token
-    const token = jwt.sign({_id:user._id},process.env.JWT_SECRET);
-    res.header('auth-token',token).send(token);
+        //create token
+        const token = jwt.sign({_id:user._id},process.env.JWT_SECRET);
+        user = await User.findOneAndUpdate({_id: user._id},{token},{new: true});
+        res.header('auth-token',token).send({message: "Login successful",user});
+    }catch(e){
+        res.status(400).send(e);
+    }
+});
+
+//logout
+router.post('/logout', auth, async(req,res) => {
+    try{
+        const user = await User.findOneAndUpdate({_id: req.user._id},{token: ''},{new: true});
+        res.send({message: "Logout successful"});
+    }catch(e){
+        res.status(400).send(e);
+    }
 });
 
 //how to use
